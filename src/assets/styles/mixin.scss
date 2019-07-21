@@ -1,0 +1,17 @@
+// @mixin混合样式
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 绝对定位水平垂直居中
+@mixin absCenter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}

@@ -1,0 +1,76 @@
+.recommend-wrap {
+  margin-top: 20px;
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  .top-wrap {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #969696;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  .list-wrap {
+    height: 50px;
+    margin-bottom: 20px;
+    position: relative;
+    $left: 55px;
+    $top: 10px;
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+    .name {
+      position: absolute;
+      top: $top;
+      left: $left;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+    .description {
+      position: absolute;
+      top: $top + 20px;
+      left: $left;
+      font-size: 12px;
+      color: #969696;
+      letter-spacing: 1px;
+    }
+    .follow {
+      position: absolute;
+      top: $top;
+      right: 0;
+      font-size: 14px;
+      color: #42c02e;
+      letter-spacing: 1px;
+      .add {
+
+      }
+    }
+  }
+  .more {
+    background: #f7f7f7;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: #787878;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    .icon-forward {
+      font-size: 12px;
+      margin-top: 1px;
+    }
+    .link {
+      color: #787878;
+      text-decoration: none;
+    }
+  }
+}

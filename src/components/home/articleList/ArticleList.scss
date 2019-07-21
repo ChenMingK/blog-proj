@@ -1,0 +1,89 @@
+@import '../../../assets/styles/mixin.scss';
+.article-list-wrap {
+  width: 625px;
+  position: relative;
+  top: 40px;
+  .list-item {
+    position: relative;
+    box-sizing: border-box;
+    height: 150px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 30px;
+    .title {
+      display: block;
+      text-decoration: none; // 去掉下划线
+      color: #333;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      width: 75%;
+      text-overflow: ellipsis;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .abstract {
+      height: 72px;
+      width: 450px;
+      // text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 13px;
+      color: #999;
+      line-height: 24px;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+    .img-wrap {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      margin-top: -50px;
+      width: 150px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all .3s linear;
+      &:hover {
+        border-radius: 0;
+      }
+      img {
+        width: 100%;
+      }
+    }
+    .meta {
+      font-size: 12px;
+      color: #B4B4B4;
+      margin-top: 15px;
+      span {
+        margin-right: 13px;
+      }
+      .jsd-meta {
+        color: #ea6f5a;
+        .icon-diamond {
+          margin-right: 3px;
+        }
+      }
+      .icon-bubble {
+        margin-right: 3px;
+      }
+      .icon-heart {
+        margin-right: 3px;
+      }
+    }
+  }
+  .load-more {
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    background: #a5a5a5;
+    font-size: 14px;
+    color: white;
+    transition: all linear .2s;
+    margin-bottom: 100px;
+    cursor: pointer;
+    @include center;
+    &:hover {
+      opacity: .8;
+    }
+  }
+}

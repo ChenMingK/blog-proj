@@ -1,0 +1,44 @@
+@import '../../../assets/styles/mixin.scss';
+.sidebar-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: 20px;
+  height: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #eee;
+  .list-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 30px;
+    box-sizing: border-box;
+    height: 50px;
+    line-height: 30px;
+    // margin-bottom: 40px;
+    color: #000;
+    overflow: hidden;
+    transition: all ease-in .2s;
+    cursor: pointer;
+    &:hover {
+      background: #ea6f5a;
+      color: white;
+    }
+  }
+}
+.sidebar-img-wrap {
+  margin-top: 30px;
+  width: 100%;
+  img {
+    width: 100%;
+  }
+  .sidebar-text {
+    text-align: center;
+    font-size: 14px;
+    color: skyblue;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+}

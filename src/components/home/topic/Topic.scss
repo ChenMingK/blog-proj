@@ -1,0 +1,10 @@
+.topic-wrap {
+  width: 100%;
+  img {
+    width: 100%;
+    margin-bottom: 6px;
+    &:first-child {
+      margin-top: -3px;
+    }
+  }
+}
