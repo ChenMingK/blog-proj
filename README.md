@@ -72,3 +72,126 @@
 |-- app.js                // 规定中间件的引入顺序 / 请求的处理顺序，整合路由
 |-- package.json
 ```
+## 使用 nodemon 和 cross-env
+`npm install nodemon cross-env --save-dev`
+
+nodemon 用于热重启，就是跟 webpack 的热更新差不多，保存文件后自动重启服务。
+
+cross-env 用于配置环境变量。
+
+packages.json 做如下脚本配置：
+```js
+"scripts": {
+    "start": "node ./bin/www",
+    "dev": "cross-env NODE_ENV=dev nodemon ./bin/www",
+    "prd": "cross-env NODE_ENV=production pm2 start ./bin/www" // pm2 之后会介绍
+  },
+```
+可以通过如下方式获取环境参数：从而根据环境来修改我们的一些配置（如 mysql redis）
+```js
+// 配置文件
+const env = process.env.NODE_ENV
+
+// mysql 配置, redis 配置
+let MYSQL_CONF
+let REDIS_CONF
+
+// 开发环境
+if (env === 'dev') {
+  // mysql
+  MYSQL_CONF = {
+    ...
+  }
+
+  // redis
+  REDIS_CONF = {
+    port: 6379,
+    host: '127.0.0.1'
+  }
+}
+
+// 线上环境
+if (env === 'production') {
+  ...
+}
+```
+## 文件结构拆分
+- 为什么要把 www 和 app.js 分离？ 
+
+www 仅与 server（服务启动）相关，app.js 负责一些其他的业务，如果之后需要修改，那么与 server 相关就只需要负责 www 文件即可。
+- router 和 controller 为什么要分离？
+
+router 中只负责路由的响应与回复，不负责具体数据的处理（数据库操作）；
+controller 只负责数据，传入参数操作数据库返回结果，相当于封装好的数据操作，与路由无关（路由负责调用）
+
+## mysql 占位技巧
+```js
+let sql = `SELECT * FROM blogs WHERE 1 = 1` // 1 = 1的意义？占位，如果 author 和 keyword 都没有值这样不会报错
+if (author) {
+  sql += `AND author='${author}' `
+}
+if (keyword) {
+  sql += `AND title LIKE '%${keyword}%' `
+}
+sql += `ORDER BY createtime DESC;`
+```
+
+## 将数据库执行语句封装为 Promise 对象
+```js
+// 统一执行 sql 的函数，并封装为 Promise 对象
+function exec (sql) {
+  const promise = new Promise((resolve, reject) => {
+    conn.query(sql, (err, result) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(result)
+    })
+  })
+  return promise
+}
+```
+我们在 controller 层再做一层封装：
+```js
+const getArticleList = () => {
+  const sql = `SELECT * FROM articles`
+  return exec(sql)
+}
+```
+在路由处理时这样使用：
+```js
+// Home 页获取文章列表
+router.get('/getPartArticles', (req, res) => {
+  const result = getArticleList()
+  return result.then(data => {
+    res.json(
+      new SuccessModel(data)
+    )
+  })
+})
+```
+这么做的目的主要是让回调的顺序更为清晰，本来 Promise 就是为了解决回调地狱的问题，当然也可以采用 async / await 的写法：
+```js
+// 这是 koa2 的形式，koa2 原生支持 async / await 的写法
+router.post('/login', async (req, res) => {
+    // 原来做法
+    // query('select * from im_user', (err, rows) => {
+    //     res.json({
+    //         code: 0,
+    //         msg: '请求成功',
+    //         data: rows
+    //     })
+    // })
+    
+    // 现在
+    const rows = await query('select * from im_user')
+    res.json({
+        code: 0,
+        msg: '请求成功',
+        data: rows
+    })  
+})
+```
+
+
