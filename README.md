@@ -47,6 +47,143 @@
 |-- App.js                // 根组件 / 定制路由
 |-- index.js              // 项目入口 / webpack 打包入口文件
 ```
+## react-router-dom 路由跳转的几种方式
+1.引入\<Link> 组件并使用，但是其有默认的样式（比如下划线），还要修改其默认样式
+```jsx
+import <Link> from 'react-router-dom'
+...
+<Link to="/login" className="login-btn">
+  <span className="login-text">登录</span>
+</Link>
+```
+2.导入 withRouter 使用 js 方式跳转
+```jsx
+import { withRouter } from 'react-router-dom'
+
+// 需要对该组件做如下处理（这是与 redux 连接的同时又使用 withRouter 的情况）
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
+
+// js 方法实现路由跳转
+this.props.history.push('/')
+
+// 简单来说就是通过某种方式(context?)把 history 给传递到这个组件了
+```
+
+## 回到顶部的过渡效果
+1.利用 `window.scrollTo(xpos, ypos)` 方法加上 `transition: all linear .2s` 来实现 - 该方案无效
+
+2.利用元素的 scrollTop 属性，点击回到顶部按钮时设置元素的 scrollTop: 0 再添加 transition 属性来实现 - 无法对 scrollTop 属性实现过渡
+
+3.该元素的 css 中添加 `scroll-behavior: smooth;` 点击回到顶部按钮时设置元素的 scrollTop: 0 - OK
+
+## 利用 \<hr> 画分割线
+
+<img src="https://github.com/ChenMingK/ImagesStore/blob/master/imgs/_M(%60%5D%40Z_HN3C1CP1UQ%24RR%60R.png" />
+
+```scss
+hr {
+  border-color: #eaeaea;
+  border: 0; // 默认横线
+  border-top: 1px solid #eee; // 画条灰色横线
+  margin-left: 65px; // 这是块级元素，可以用 margin 来控制横线长度
+  margin-right: 15px;
+}
+```
+## 利用 transform:scaleX() 实现下划线伸缩效果
+
+<img src="https://github.com/ChenMingK/ImagesStore/blob/master/imgs/underline.gif"/>
+
+```scss
+.menu-item {
+  @include center;
+  width: 100px;
+  color: #969696;
+  font-weight: 700;
+  font-size: 16px;
+  position: relative;
+  .icon {
+    margin-right: 5px;
+  }
+  // 利用伪元素给这个 item 加 "下划线"
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    border-bottom: 2px solid #646464;
+    top: 100%;
+    transform: scaleX(0);
+    transition: all linear .2s;
+  }
+  // hover 时改变 scaleX
+  &:hover {
+    color: #646464;
+    cursor: pointer;
+    &:after { // 咋选的?
+      transform: scaleX(1);
+    }
+  }
+}
+```
+
+## 利用 DOM 操作手动添加的事件处理程序要手动移除
+```js
+// 假设在加载组件时这样添加事件处理程序
+componentDidMount() {
+  let app = document.getElementsByClassName('App')[0]
+  app.addEventListener('scroll', this.handleScroll, false)
+}
+
+// 就需要这么移除，否则会报内存泄漏，另外注意这里的 this.handleScroll 必须是与上面的 addEventListener 相同的引用
+componentWillUnmount() {
+  let app = document.getElementsByClassName('App')[0]
+  app.removeEventListener('scroll', this.handleScroll, false)
+}
+```
+
+## 防止无意义的渲染
+```js
+shouldComponentUpdate(nextProps, nextState) {
+  // ArticleList 组件是从父组件拿到的 articlelist，发现在内容没变的情况下页面向下滚动就会触发 render 函数
+  // 投机取巧......
+  return nextProps.articleList.length !== this.props.articleList.length
+}
+```
+
+## 自己实现一个带边框的 tooltip
+<img src="https://github.com/ChenMingK/ImagesStore/blob/master/imgs/%7D%5BNNZ8%5B%7D6%7B3UL_%5D%25WMTT)2F.png" />
+
+小三角就用我们熟悉的 css 画三角来画，如果我们想给这个 tooltip 外层加一个边框？可以再利用一次伪元素来画一个三角形，其颜色
+就是边框颜色，利用高度差来实现这个边框效果。
+
+```scss
+&:after {
+  content: ''; // 记得加 content 才行
+  width: 0;
+  height: 0;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 101;
+  margin-left: -10px;
+}
+// 如果我想给小三角再加个边框?
+&:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-width: 11px;
+  border-style: solid;
+  border-color: #f0f0f0 transparent transparent transparent;
+  position: absolute;
+  top: calc(100% + 1px); // calc 大法好
+  left: 50%;
+  z-index: 100;
+  margin-left: -11px;
+}
+```
 # 后端
 ## 项目结构
 ```
