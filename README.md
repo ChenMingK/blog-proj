@@ -13,6 +13,10 @@
 - PM2 进程守护
 
 线上体验地址：<a href="http:www.cmk1018.cn:8085">点我跳转</a>
+
+:eyes: 这个项目还有很多功能待完善，比如用户编辑、删除自己的文章，加载更多功能的实现以及富文本编辑器的完善，不过本项目的目的主要是熟悉下 React 的开发流程和登录验证的流程，以后有空会补上...
+
+<a href="https://www.kancloud.cn/chenmk/web-knowledges/1144248">这是我学习 React 的笔记</a>，另外推荐通过《深入浅出 React 与 Redux》这本书来学习 React
 # Show
 <img src="https://github.com/ChenMingK/ImagesStore/blob/master/imgs/show.gif" />
 
