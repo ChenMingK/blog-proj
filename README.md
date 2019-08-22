@@ -578,6 +578,7 @@ PM2 解决了哪些问题？
 ```
 <img src="https://github.com/ChenMingK/ImagesStore/blob/master/imgs/pm2.png" />
 
+更详细的使用说明见：https://juejin.im/post/5be406705188256dbb5176f9#heading-6
 ## 日志分析技巧
 使用 crontab 命令（linux）拆分日志：
 - 日志内容会慢慢积累，放在一个文件中不好处理
